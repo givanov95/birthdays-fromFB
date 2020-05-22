@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		button {
+	cursor: pointer;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+	</style>
+</head>
+<body>
+
+	<div>
+	<p>
+		<h1>Paste your code here:</h1>
+	</p>
+<textarea id="information" rows="10" cols="100">
+
+</textarea>
+</div>
+
+	<button class="btn btn-primary" onclick="getBirthdays()">Download Calendar CVS</button>
+
+	<!-- <div class="loader"></div> -->
+
+<script>
+	
+	function getBirthdays(){
+
+	let information = document.getElementById('information').value;
+
+	let infoElement = document.createElement("div");
+	
+	infoElement.innerHTML = information;
+	infoElement.style.display="none";
+
+	document.body.appendChild(infoElement);
+
+
+
+
+	let aTags = document.querySelectorAll("a");
+
+      var table = document.createElement('table');
+      table.innerHTML=`<tr>
+			<td>Subject</td>
+			<td>Start date</td>
+			<td>All Day Event</td></tr>`;
+
+
+
+    
+	for (var i = 0; i < aTags.length; i++) {
+		let attribute = aTags[i].getAttribute("data-tooltip-content");
+		if(attribute!=null){	
+		let name = attribute.substr(0,attribute.length-7);			
+		let birthDay = attribute.substring(attribute.length-6,attribute.length-1);
+		
+		table.innerHTML+="<tr><td>Birthday: "+name+"</td><td>"+birthDay+"/2020</td><td>true</td></tr>";
+		
+	}
+}
+
+table.style.display="none";
+document.body.appendChild(table);
+
+
+	// Export CSV
+
+		function download_csv(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV FILE
+    csvFile = new Blob(["\uFEFF"+csv], {
+    type: 'text/csv; charset=utf-18'
+}); // Format UTF
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // We have to create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Make sure that the link is not displayed
+    downloadLink.style.display = "none";
+
+    // Add the link to your DOM
+    document.body.appendChild(downloadLink);
+
+    // Lanzamos
+    downloadLink.click();
+}
+
+function export_table_to_csv(html, filename) {
+	var csv = [];
+	var rows = document.querySelectorAll("table tr");
+	
+    for (var i = 0; i < rows.length; i++) {
+		var row = [], cols = rows[i].querySelectorAll("td");
+		
+        for (var j = 0; j < cols.length; j++) { 
+
+            row.push(cols[j].innerText);
+        
+
+        }
+        
+		csv.push(row.join(","));		
+	}
+
+    // Download CSV
+    download_csv(csv.join("\n"), filename);
+}
+
+
+
+
+    var html = document.querySelector("table").outerHTML;
+	export_table_to_csv(html, "table.csv");
+
+	
+		
+}
+	     
+	    
+</script>
+</body>
+</html>
