@@ -97,14 +97,29 @@
     
 	for (var i = 0; i < aTags.length; i++) {
 		let attribute = aTags[i].getAttribute("data-tooltip-content");
-		if(attribute!=null){	
-		let name = attribute.substr(0,attribute.length-7);			
-		let birthDay = attribute.substring(attribute.length-6,attribute.length-1);
-		
+		let startLength;   
+		if(attribute!=null){
+      console.log(attribute);
+        textAttribute =attribute;
+      for (let j = 0; j < attribute.length; j++) {
+          if(textAttribute[j]=="(") {
+            startLength=j+2;
+            break;
+          }
+      }
+        
+		let name = attribute.substr(0,startLength-2);			
+		let birthDay = attribute.substring(startLength-1,attribute.length-1);
+    for (let z = 0; z < birthDay.length; z++) {
+        if(birthDay[z]=="."||birthDay[z]=="-") {
+          birthDay[z]+="/";
+        }
+      
+    }
 		table.innerHTML+="<tr><td>Birthday: "+name+"</td><td>"+birthDay+"/2020</td><td>true</td></tr>";
+    }
 		
 	}
-}
 
 table.style.display="none";
 document.body.appendChild(table);
