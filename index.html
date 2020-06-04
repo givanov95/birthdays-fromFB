@@ -90,16 +90,12 @@
       table.innerHTML=`<tr>
 			<td>Subject</td>
 			<td>Start date</td>
-			<td>All Day Event</td></tr>`;
-
-
-
-    
+			<td>All Day Event</td></tr>`;    
 	for (var i = 0; i < aTags.length; i++) {
 		let attribute = aTags[i].getAttribute("data-tooltip-content");
 		let startLength;   
 		if(attribute!=null){
-      console.log(attribute);
+      
         textAttribute =attribute;
       for (let j = 0; j < attribute.length; j++) {
           if(textAttribute[j]=="(") {
@@ -108,15 +104,23 @@
           }
       }
         
-		let name = attribute.substr(0,startLength-2);			
+		let name = attribute.substr(0,startLength-2);
+    let birthDayFinal="";	
+    let birthDayMid="";	
 		let birthDay = attribute.substring(startLength-1,attribute.length-1);
-    for (let z = 0; z < birthDay.length; z++) {
-        if(birthDay[z]=="."||birthDay[z]=="-") {
-          birthDay[z]+="/";
+    for (let z = 0; z < birthDay.length; z++) {    
+        if(birthDay[z]=="."||birthDay[z]=="-") {    
+          birthDayMid="/"         
         }
+
+        else {
+          birthDayMid=birthDay[z];
+        }
+
+        birthDayFinal+=birthDayMid;       
       
     }
-		table.innerHTML+="<tr><td>Birthday: "+name+"</td><td>"+birthDay+"/2020</td><td>true</td></tr>";
+		table.innerHTML+="<tr><td>Birthday: "+name+"</td><td>"+birthDayFinal+"/2020</td><td>true</td></tr>";
     }
 		
 	}
