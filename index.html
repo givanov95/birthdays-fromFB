@@ -27,14 +27,15 @@
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.loader {
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
+.loading {
+  position: absolute;
+  top: 0;
+  opacity: .5;
+}
+
+.hidden { 
+  display: none;
+
 }
 
 /* Safari */
@@ -60,17 +61,25 @@
 <textarea id="information" rows="10" cols="100">
 
 </textarea>
+<div class="hidden loading"><img src="/images/loading.gif" alt=""></div>
 </div>
 
-	<button onclick="getBirthdays()">Download Calendar CVS</button>
+	<button onclick="myFunction()">Download Calendar CVS</button>
 	
 	<a href="/birthdays-fromFB/readme.docx" class="aButton">Read-more</a>
 
-	<!-- <div class="loader"></div> -->
+	
 
 <script>
+
+function myFunction() {
+  var myVar;
+  document.querySelector('.loading').classList.remove('hidden');
+  myVar = setTimeout(getBirthdays, 2000);
+}
 	
 	function getBirthdays(){
+
 
 	let information = document.getElementById('information').value;
 
@@ -186,7 +195,7 @@ function export_table_to_csv(html, filename) {
     var html = document.querySelector("table").outerHTML;
 	export_table_to_csv(html, "table.csv");
 
-	
+	document.querySelector('.loading').classList.add('hidden');
 		
 }
 	     
